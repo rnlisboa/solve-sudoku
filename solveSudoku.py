@@ -16,20 +16,20 @@ class SudokuSolve:
         for lines in self.sudoku:
             print(lines)
     
-    def run_line(self, line:int, num:str) -> None:
+    def run_line(self, line:int, num:str) -> bool:
         for element in self.sudoku[line]:
             if num == element:
                 return True
         return False
 
-    def run_col(self, column:int, num:str) -> None:
+    def run_col(self, column:int, num:str) -> bool:
         for l in range(0,9):
             element = self.sudoku[l][column]
             if num == element:
                 return True
         return False
 
-    def run_box(self, a:int, b:int, c:int, d:int, num:str) -> None:
+    def run_box(self, l:int, c:int, num:str) -> bool:
         # PARA EVITAR ESSES PARAMETROS, PRECISO SABER ONDE O CURSOR ESTÁ NA MATRIZ
         """
           l     c
@@ -48,22 +48,32 @@ class SudokuSolve:
         """
 
         # os parametros da função devera ser os os limites a,b e c,d para linha e coluna
+        a, b, c, d = 0,3,0,3
         for linha in range(a,b):
             for coluna in range(c,d):
                 element = self.sudoku[linha][coluna]
                 if num == element:
                     return True
-            return False
+        return False
 
-    def find_occr(self, num:str):
+    def find_occr(self, num:str, l:int, c:int) -> bool:
         founded_line = self.run_line(0, num)
         founded_column = self.run_col(2, num)
-        founded_box = self.run_box(0,3,0,3, num)
+        founded_box = self.run_box(l,c, num)
         
-        if(founded_box or founded_column or founded_line): return True
+        if(founded_box or founded_column or founded_line): 
+            return True
         return False
+
+    def run_matrix(self):
+        for i in range(9):
+            for j in range(9):
+                case = self.sudoku[i][j]
+                if case == '.':
+                    num = randint(1,9)
+                    can_set = self.find_occr(str(num), i, j)
       
 
-sudokuSolve = SudokuSolve()
+sdkSolve = SudokuSolve()
 
-print(sudokuSolve.find_occr("6"))
+sdkSolve.run_matrix()
